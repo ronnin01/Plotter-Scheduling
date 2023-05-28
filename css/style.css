@@ -1,0 +1,84 @@
+.nav-sidebar{
+    position: fixed;
+    overflow-y: scroll;
+    width: 70px;
+    height: 100vh;
+    z-index: 10;
+}
+.nav-sidebar::-webkit-scrollbar{
+    display: none;
+}
+#plot-content, #add-plot-content, #print-content{
+    margin-left: 65px;
+}
+
+td {
+    text-align: center;
+    padding: 10px 20px;
+    position:relative;
+}
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.item {
+    background: #576CBC;
+    color: white;
+}
+[class*="row-span"] {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+}
+
+.sched:hover{
+    cursor: pointer;
+    color: #EBB02D;
+}
+
+.row-span-10 {
+    height:calc(1000% + 9*1px);
+}
+.row-span-9 {
+    height:calc(900% + 8*1px);
+}
+.row-span-8 {
+    height:calc(800% + 7*1px);
+}
+.row-span-7 {
+    height:calc(700% + 6*1px);
+}
+.row-span-6 {
+    height:calc(600% + 5*1px);
+}
+.row-span-5 {
+    height:calc(500% + 4*1px);
+}
+.row-span-4 {
+    height:calc(400% + 3*1px);
+}
+.row-span-3 {
+    height:calc(300% + 2*1px);
+}
+.row-span-2 {
+    height:calc(200% + 1*1px);
+}
+.row-span-1 {
+    height:calc(100% + 0*1px);
+}
+
+.menu-bar{
+    visibility: hidden;
+}
+@media (max-width: 991px) {
+    .menu-bar{
+        visibility: visible;
+    }
+    .nav-sidebar{
+        width: 0;
+    }
+    #plot-content, #add-plot-content, #print-content{
+        margin-left: 0;
+    }
+}

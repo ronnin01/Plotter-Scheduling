@@ -23,7 +23,7 @@
         <div class="position-relative" id="plot-content">
 
             <?php include_once("../components/navbar.php") ?>
-
+            
             <div class="row g-2 px-3 my-1">
                 <div class="col-lg-4 col-12">
                     <div class="card rounded-0 border-0">

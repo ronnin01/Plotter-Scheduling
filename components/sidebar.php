@@ -14,6 +14,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-center" style="font-size: 11px;" href="/scheduling/admin/teacher_load.php">
+                    <i class="bi bi-person-badge h3"></i><br>
+                    Teacher Load
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-center" style="font-size: 11px;" href="/scheduling/admin/print.php">
                     <i class="bi bi-printer h3"></i><br>
                     Print Schedule

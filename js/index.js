@@ -29,6 +29,9 @@ $(document).ready(function(){
     var __department;
     var __semester;
     var __school_year;
+    var __section;
+    var __teacher;
+    var __room
 
     function section_timetable(department, semester, school_year, section){
         $.ajax({
@@ -180,6 +183,7 @@ $(document).ready(function(){
                 $("#room-select-department").html(response);
                 $("#select-section-department").html(response);
                 $("#print-select-department").html(response);
+                $("#teacher-load-select-department").html(response);
             }
         });
     }
@@ -257,6 +261,7 @@ $(document).ready(function(){
                 $("#select-ay-subject").html(response);
                 $("#select-section-ay").html(response);
                 $("#print-select-school-year").html(response);
+                $("#teacher-load-select-school-year").html(response);
             }
         });
     }
@@ -719,6 +724,7 @@ $(document).ready(function(){
                 $("#select-teacher").html(response);
                 $("#select-teacher-timetable").html(response);
                 $("#print-select-teacher").html(response);
+                $("#teacher-load-select-teacher").html(response);
             }
         });
     }
@@ -879,30 +885,36 @@ $(document).ready(function(){
     // SELECT SECTION TIMETABLE
     $(document).on("change", "#select-section-timetable", ()=>{
         const section = $("#select-section-timetable").val();
+        __section = $("#select-section-timetable").val();
         section_timetable(__department, __semester, __school_year, section);
     });
     $(document).on("change", "#select-section", ()=>{
         const section = $("#select-section").val();
+        __section = $("#select-section").val();
         section_timetable(__department, __semester, __school_year, section);
     });
 
     // SELECT TEACHER TIMETABLE
     $(document).on("change", "#select-teacher-timetable", ()=>{
         const teacher = $("#select-teacher-timetable").val();
+        __teacher = $("#select-teacher-timetable").val();
         teacher_timetable(__department, __semester, __school_year, teacher);
     });
     $(document).on("change", "#select-teacher", ()=>{
         const teacher = $("#select-teacher").val();
+        __teacher = $("#select-teacher").val();
         teacher_timetable(__department, __semester, __school_year, teacher);
     });
 
     // SELECT ROOM TIMETABLE
     $(document).on("change", "#select-room-timetable", ()=>{
         const room = $("#select-room-timetable").val();
+        __room = $("#select-room-timetable").val();
         room_timetable(__department, __semester, __school_year, room);
     });
     $(document).on("change", "#select-room", ()=>{
         const room = $("#select-room").val();
+        __room = $("#select-room").val();
         room_timetable(__department, __semester, __school_year, room);
     });
 
@@ -1037,7 +1049,123 @@ $(document).ready(function(){
     }
 
     $(document).on("click", ".sched", function(){
-        alert($(this).attr('data-id'));
+        var schedule_id = $(this).attr("data-id");
+
+        $.ajax({
+            type: "POST",
+            url: "../data/data.retrieve_update_schedule.php",
+            data: {
+                schedule_id: schedule_id,
+                submit: "submit"
+            },
+            success: function(response){
+                $("#update-schedule").html(response);
+            }
+        });
     })
+
+    // RETRIEVE TEACHER FOR REVIEW TEACHER LOADS
+    // DEPARTMENT
+    $(document).on("change", "#teacher-load-select-department", function(){
+        __department = $(this).val();
+        retrieve_teacher_for_plot(__department, __semester, __school_year);
+    });
+    // SEMESTER
+    $(document).on("change", "#teacher-load-select-semester", function(){
+        __semester = $(this).val();
+        retrieve_teacher_for_plot(__department, __semester, __school_year);
+    });
+    // SCHOOL YEAR
+    $(document).on("change", "#teacher-load-select-school-year", function(){
+        __school_year = $(this).val();
+        retrieve_teacher_for_plot(__department, __semester, __school_year);
+    });
+
+    // TEACHER SELECT TO VIEW FOR TEACHER LOAD
+    $(document).on("change", "#teacher-load-select-teacher", function(){
+
+        var teacher = $(this).val();
+
+        $.ajax({
+            type: "POST",
+            url: "../data/data.teacher_load.php",
+            data: {
+                department: __department,
+                semester: __semester,
+                school_year: __school_year,
+                teacher: teacher,
+                submit: "submit"
+            },
+            success: function(response){
+                $("#teacher-load-data").html(response);
+            }
+        })
+
+    });
+
+    // DELETE SCHEDULE
+    $(document).on("click", "#delete-schedule", function(e){
+
+        e.preventDefault();
+
+        var deleteScheduleID = $(this).attr("data-id");
+        var confirmDelete = confirm("Are you sure to delete this schedule?");
+
+        if(confirmDelete){
+            $.ajax({
+                type: "POST",
+                url: "../data/data.delete_schedule.php",
+                data: {
+                    deleteScheduleID: deleteScheduleID
+                },
+                success: function(response){
+                    if(response == 1){
+                        $("#alert-messages").html(trigger_toast_message("Schedule successfully deleted.", __icon.success_icon, "bg-success", "text-white"));
+                        trigger_toast("trigger-toast");
+                    }else{
+                        $("#alert-messages").html(trigger_toast_message("Unable to delete schedule.", __icon.erro_icon, "bg-danger", "text-white"));
+                        trigger_toast("trigger-toast");
+                    }
+
+                    section_timetable(__department, __semester, __school_year, __section);
+                    teacher_timetable(__department, __semester, __school_year, __teacher);
+                    room_timetable(__department, __semester, __school_year, __room);
+                }
+            });
+        }
+
+    })
+
+    // UPDATE SCHEDULE 
+    $(document).on("submit", "#update-schedule-form", function(e){
+        e.preventDefault();
+
+        var form = document.getElementById("update-schedule-form");
+        var formData = new FormData(form);
+
+        const room = formData.get("schedule_room");
+        const week_day = formData.get("schedule_week_day");
+        const start_time_hour = formData.get("schedule_start_time_hour");
+        const start_time_minute = formData.get("schedule_start_time_minute");
+        const end_time_hour = formData.get("schedule_end_time_hour");
+        const end_time_minute = formData.get("schedule_end_time_minute");
+
+        $.ajax({
+            type: "POST",
+            url: "../data/data.update_schedule.php",
+            data:{
+                room: room,
+                week_day: week_day,
+                start_time_hour: start_time_hour,
+                start_time_minute: start_time_minute,
+                end_time_hour: end_time_hour,
+                end_time_minute: end_time_minute,
+                submit: "submit"
+            },
+            success: function(response){
+                
+            }
+        })
+    });
 
 });

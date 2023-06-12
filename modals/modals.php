@@ -300,3 +300,21 @@
         </div>
     </div>
 </div>
+
+<!-- UPDATE SCHEDULE MODAL -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="my-2">
+                    <h4>Update Schedule</h4>
+                </div>
+                <hr>
+                <div class="my-2" id="update-schedule"></div>
+            </div>
+        </div>
+    </div>
+</div>

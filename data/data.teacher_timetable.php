@@ -88,7 +88,7 @@
                                         if(date("H:i", strtotime($time)) == date("H:i", strtotime($val['schedule_start_time']))){
                                             echo "
                                                 <div class='item row-span-".$val['schedule_rowspan']."'>
-                                                    <p style='font-size: 10px;' class='text-center sched' data-id='".$val['schedule_id']."'>
+                                                    <p style='font-size: 10px;' class='text-center sched' data-id='".$val['schedule_id']."' data-bs-toggle='modal' data-bs-target='#staticBackdrop'>
                                                         ".$val["schedule_teacher"]."
                                                         <br>
                                                         ".$val["schedule_section"]." - ".$val["schedule_room"]."
